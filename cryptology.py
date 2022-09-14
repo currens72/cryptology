@@ -7,8 +7,6 @@ import tkinter as tk
 #100 most common words according to wikipedia.org
 commonWord = ["THE", "BE", "TO", "OF", "AND", "IN", "THAT", "HAVE", "IT", "FOR", "NOT", "ON", "WITH", "HE", "AS", "YOU", "DO", "AT", "THIS", "BUT", "HIS", "BY", "FROM", "THEY", "WE", "SAY", "HER", "SHE", "OR", "AN", "WILL", "MY", "ONE", "ALL", "WOULD", "THERE", "THEIR", "WHAT", "SO", "UP", "OUT", "IF", "ABOUT", "WHO", "GET", "WHICH", "GO", "ME", "WHEN", "MAKE", "CAN", "LIKE", "TIME", "NO", "JUST", "HIM", "KNOW", "TAKE", "PEOPLE", "INTO", "YEAR", "YOUR", "GOOD", "SOME", "COULD", "THEM", "THEM", "SEE", "OTHER", "THAN", "THEN", "NOW", "LOOK", "ONLY", "COME", "ITS", "OVER", "THINK", "ALSO", "BACK", "AFTER", "USE", "TWO", "HOW", "OUR", "WORK", "FIRST", "WELL", "WAY", "EVEN", "NEW", "WANT", "BECAUSE", "ANY", "THESE", "GIVE", "DAY", "MOST", "US"]
 
-window =tk.Tk()
-
 #function to check if 100 most common words are contained in decryption
 def contains(string):
     if any(ele in string for ele in commonWord):
@@ -66,6 +64,15 @@ def trigram():
     ciphertext = input("Enter cipher text here: ")
     trigramCount = Counter(map(''.join, zip(ciphertext, ciphertext[1:], ciphertext[2:])))
     print(trigramCount)
+
+############################################################################################
+############################################################################################
+###############  Window Below Here  ########################################################
+############################################################################################
+############################################################################################
+
+window =tk.Tk()
+window.title('Basic Cryptology')
 
 shiftButton = tk.Button(
     text="Shift-By Cipher",
