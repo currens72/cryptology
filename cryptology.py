@@ -71,6 +71,10 @@ def trigram():
 ############################################################################################
 ############################################################################################
 
+#function for shift cipher button
+def shiftCipherButton():
+    print()
+
 window =tk.Tk()
 window.title('Basic Cryptology')
 
@@ -79,7 +83,8 @@ shiftButton = tk.Button(
     width=25,
     height=5,
     bg="white",
-    fg="black"
+    fg="black",
+    command=shiftCipherButton
 )
 shiftButton.grid(row=0, column=0)
 
@@ -93,8 +98,5 @@ permutateButton = tk.Button(
 permutateButton.grid(row=0, column=1)
 
 alphabet = string.ascii_uppercase
-
-#shiftButton.pack()
-#permutateButton.pack()
 
 window.mainloop()
