@@ -71,14 +71,52 @@ def trigram():
 ############################################################################################
 ############################################################################################
 
+automatic = int(1)
 #function for shift cipher button
 def shiftCipherButton():
-    print()
+    #function to shift between automatic or manual
+    def autoManual():
+        global automatic
+        if automatic == 1:
+            automatic = automatic - 1
+            autoButton["text"] = "Manual"
+        else:
+            automatic = automatic + 1
+            autoButton["text"] = "Automatic"
+    shiftWindow = tk.Toplevel()
+    shiftWindow.resizable(width=False, height=False)
+    autoLabel = tk.Label(
+        shiftWindow,
+        text="\nShift between automatic by\npressing the button below.\n"
+    )
+    autoLabel.grid(row=1, column=0)
+    autoButton = tk.Button(
+        shiftWindow,
+        text="Automatic",
+        width=25,
+        height=5,
+        bg="white",
+        fg="black",
+        command=autoManual
+    )
+    runButton = tk.Button(
+        shiftWindow,
+        text="Run",
+        width=25,
+        height=5,
+        bg="white",
+        fg="black",
+    )
+    runButton.grid(row=0, column=0)
+    autoButton.grid(row=2, column=0)
 
-window =tk.Tk()
+#setting up the window
+window = tk.Tk()
 window.title('Basic Cryptology')
+window.resizable(width=False, height=False)
 
 shiftButton = tk.Button(
+    window,
     text="Shift-By Cipher",
     width=25,
     height=5,
@@ -89,6 +127,7 @@ shiftButton = tk.Button(
 shiftButton.grid(row=0, column=0)
 
 permutateButton = tk.Button(
+    window,
     text="Custom Permutated Alphabet",
     width=25,
     height=5,
