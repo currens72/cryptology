@@ -74,22 +74,40 @@ def trigram():
 automatic = int(1)
 #function for shift cipher button
 def shiftCipherButton():
+    #function to automatically decrypt cipher text
+    def autoDecrypt():
+        for i in range(1, 26):
+            print()
+    #function to mannualy decrypt cipher text
+    def manualDecrypt():
+        print()
     #function to shift between automatic or manual
     def autoManual():
         global automatic
         if automatic == 1:
             automatic = automatic - 1
             autoButton["text"] = "Manual"
+            cipherText.insert("1.0", "Test") #remove
         else:
             automatic = automatic + 1
             autoButton["text"] = "Automatic"
+    #function to run decryption
+    def runDecryption():
+        global automatic
+        if automatic == 1:
+            autoDecrypt()
+        else:
+            manualDecrypt()
+    ##############################################
+    ##############################################
+    ##############################################
     shiftWindow = tk.Toplevel()
     shiftWindow.resizable(width=False, height=False)
+    shiftWindow.geometry('555x250')
     autoLabel = tk.Label(
         shiftWindow,
         text="\nShift between automatic and\nmanual by pressing the\nbutton below.\n"
     )
-    autoLabel.grid(row=1, column=0)
     autoButton = tk.Button(
         shiftWindow,
         text="Automatic",
@@ -106,9 +124,28 @@ def shiftCipherButton():
         height=5,
         bg="white",
         fg="black",
+        command=runDecryption
+    )
+    cipherText = tk.Text(
+        shiftWindow,
+        height=5,
+        width=25
+    )
+    inputLabel = tk.Label(
+        shiftWindow,
+        text="\n\nEnter encrypted text to the left\n\n"
     )
     runButton.grid(row=0, column=0)
+    autoLabel.grid(row=1, column=0)
     autoButton.grid(row=2, column=0)
+    cipherText.grid(row=0, column=3)
+    inputLabel.grid(row=0, column=2)
+
+######################################################
+######################################################
+######################################################
+######################################################
+######################################################
 
 #setting up the window
 window = tk.Tk()
