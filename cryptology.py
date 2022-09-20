@@ -87,7 +87,7 @@ def shiftCipherButton():
     shiftWindow.resizable(width=False, height=False)
     autoLabel = tk.Label(
         shiftWindow,
-        text="\nShift between automatic by\npressing the button below.\n"
+        text="\nShift between automatic and\nmanual by pressing the\nbutton below.\n"
     )
     autoLabel.grid(row=1, column=0)
     autoButton = tk.Button(
