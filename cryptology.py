@@ -9,6 +9,7 @@ commonWord = ["THE", "BE", "TO", "OF", "AND", "IN", "THAT", "HAVE", "IT", "FOR",
 
 #function to check if 100 most common words are contained in decryption
 def contains(string):
+    total = sum(string.count(i) for i in commonWord)
     if any(ele in string for ele in commonWord):
         return True
     else:
@@ -76,24 +77,41 @@ automatic = int(1)
 def shiftCipherButton():
     #function to automatically decrypt cipher text
     def autoDecrypt():
+        encryptedText = cipherText.get(1.0, "end-1c")
+        encryptedText = encryptedText.replace(" ", "")
+        encryptedText = encryptedText.upper()
         for i in range(1, 26):
-            print()
+            shifted = alphabet[i:] + alphabet[:i]
+            translation = str.maketrans(shifted, alphabet)
+            checkText = encryptedText.translate(translation)
+            if contains(checkText):
+                print("True")
+            else:
+                print("False")
     #function to mannualy decrypt cipher text
     def manualDecrypt():
-        print()
-    #function to shift between automatic or manual
+        shiftBy = shiftAmount.get(1.0, "end-1c")
+        shiftBy = int(shiftBy)
+        encryptedText = cipherText.get(1.0, "end-1c")
+        encryptedText = encryptedText.replace(" ", "")
+        encryptedText = encryptedText.upper()
+        shifted = alphabet[shiftBy:] + alphabet[:shiftBy]
+        #combines regular and shifted alphabet into table for translation
+        translation = str.maketrans(shifted, alphabet)
+        plainText.insert("1.0", encryptedText.translate(translation))
+        #function to shift between automatic or manual
     def autoManual():
         global automatic
         if automatic == 1:
             automatic = automatic - 1
             autoButton["text"] = "Manual"
-            cipherText.insert("1.0", "Test") #remove
         else:
             automatic = automatic + 1
             autoButton["text"] = "Automatic"
     #function to run decryption
     def runDecryption():
         global automatic
+        plainText.delete("1.0", "end")
         if automatic == 1:
             autoDecrypt()
         else:
@@ -131,15 +149,32 @@ def shiftCipherButton():
         height=5,
         width=25
     )
+    plainText = tk.Text(
+        shiftWindow,
+        height=5,
+        width=25
+    )
+    shiftAmount = tk.Text(
+        shiftWindow,
+        height=1,
+        width=3
+    )
     inputLabel = tk.Label(
         shiftWindow,
         text="\n\nEnter encrypted text to the left\n\n"
+    )
+    shiftLabel = tk.Label(
+        shiftWindow,
+        text="\n\nEnter shift amount here -->\n\n"
     )
     runButton.grid(row=0, column=0)
     autoLabel.grid(row=1, column=0)
     autoButton.grid(row=2, column=0)
     cipherText.grid(row=0, column=3)
+    plainText.grid(row=2, column=3)
+    shiftAmount.grid(row=1, column=3)
     inputLabel.grid(row=0, column=2)
+    shiftLabel.grid(row=1, column=2)
 
 ######################################################
 ######################################################
