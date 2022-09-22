@@ -1,2 +1,2 @@
 # cryptology
-Some programs I play around with to deal with basic cryptology.
+Full functionality for decrypting basic shift-by N ciphers.
