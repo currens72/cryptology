@@ -5,15 +5,20 @@ from collections import Counter
 import tkinter as tk
 
 #100 most common words according to wikipedia.org
-commonWord = ["THE", "BE", "TO", "OF", "AND", "IN", "THAT", "HAVE", "IT", "FOR", "NOT", "ON", "WITH", "HE", "AS", "YOU", "DO", "AT", "THIS", "BUT", "HIS", "BY", "FROM", "THEY", "WE", "SAY", "HER", "SHE", "OR", "AN", "WILL", "MY", "ONE", "ALL", "WOULD", "THERE", "THEIR", "WHAT", "SO", "UP", "OUT", "IF", "ABOUT", "WHO", "GET", "WHICH", "GO", "ME", "WHEN", "MAKE", "CAN", "LIKE", "TIME", "NO", "JUST", "HIM", "KNOW", "TAKE", "PEOPLE", "INTO", "YEAR", "YOUR", "GOOD", "SOME", "COULD", "THEM", "THEM", "SEE", "OTHER", "THAN", "THEN", "NOW", "LOOK", "ONLY", "COME", "ITS", "OVER", "THINK", "ALSO", "BACK", "AFTER", "USE", "TWO", "HOW", "OUR", "WORK", "FIRST", "WELL", "WAY", "EVEN", "NEW", "WANT", "BECAUSE", "ANY", "THESE", "GIVE", "DAY", "MOST", "US"]
+#REMOVED ALL 2 LETTER WORDS
+commonWord = ["THE", "AND", "THAT", "HAVE", "FOR", "NOT", "WITH", "YOU", "THIS", "BUT", "HIS", "FROM", "THEY", "SAY", "HER", "SHE", "WILL", "ONE", "ALL", "WOULD", "THERE", "THEIR", "WHAT", "OUT", "ABOUT", "WHO", "GET", "WHICH", "WHEN", "MAKE", "CAN", "LIKE", "TIME", "JUST", "HIM", "KNOW", "TAKE", "PEOPLE", "INTO", "YEAR", "YOUR", "GOOD", "SOME", "COULD", "THEM", "THEM", "SEE", "OTHER", "THAN", "THEN", "NOW", "LOOK", "ONLY", "COME", "ITS", "OVER", "THINK", "ALSO", "BACK", "AFTER", "USE", "TWO", "HOW", "OUR", "WORK", "FIRST", "WELL", "WAY", "EVEN", "NEW", "WANT", "BECAUSE", "ANY", "THESE", "GIVE", "DAY", "MOST"]
 
 #function to check if 100 most common words are contained in decryption
 def contains(string):
-    total = sum(string.count(i) for i in commonWord)
     if any(ele in string for ele in commonWord):
         return True
     else:
         return False
+
+#function to count how many of 100 most common words appear
+def countWords(string):
+    total = sum(string.count(i) for i in commonWord)
+    return total
 
 #function to manually shift by to decrypt text
 def decrypt():
@@ -73,10 +78,13 @@ def trigram():
 ############################################################################################
 
 automatic = int(1)
+decryptedCount = int(1)
+decryptedList = []
 #function for shift cipher button
 def shiftCipherButton():
     #function to automatically decrypt cipher text
     def autoDecrypt():
+        decryptedList.clear()
         encryptedText = cipherText.get(1.0, "end-1c")
         encryptedText = encryptedText.replace(" ", "")
         encryptedText = encryptedText.upper()
@@ -85,9 +93,10 @@ def shiftCipherButton():
             translation = str.maketrans(shifted, alphabet)
             checkText = encryptedText.translate(translation)
             if contains(checkText):
-                print("True")
-            else:
-                print("False")
+                if countWords(checkText) > 1:
+                    decryptedList.append(checkText)
+        plainText.insert("1.0", decryptedList[0])
+        nextLabel["text"] = str(len(decryptedList) - 1) + " remaining encryptions"
     #function to mannualy decrypt cipher text
     def manualDecrypt():
         shiftBy = shiftAmount.get(1.0, "end-1c")
@@ -110,12 +119,26 @@ def shiftCipherButton():
             autoButton["text"] = "Automatic"
     #function to run decryption
     def runDecryption():
+        global decryptedCount
         global automatic
+        decryptedCount = int(1)
         plainText.delete("1.0", "end")
         if automatic == 1:
             autoDecrypt()
         else:
             manualDecrypt()
+    #function to switch cipher
+    def nextDecrypion():
+        plainText.delete("1.0", "end")
+        global decryptedCount
+        numberLeft = str(len(decryptedList) - decryptedCount - 1)
+        if decryptedCount < len(decryptedList):
+            nextLabel["text"] = numberLeft + " remaining encryptions"
+            plainText.insert("1.0", decryptedList[decryptedCount])
+            decryptedCount = decryptedCount + 1
+        else:
+            nextLabel["text"] = "0 remaining encryptions"
+            plainText.insert("1.0", "Out of auto-detected decryptions. Click run to reset the list.")
     ##############################################
     ##############################################
     ##############################################
@@ -167,6 +190,19 @@ def shiftCipherButton():
         shiftWindow,
         text="\n\nEnter shift amount here -->\n\n"
     )
+    nextButton = tk.Button(
+        shiftWindow,
+        text="Click for next\nencryption.",
+        width=15,
+        height=3,
+        bg="white",
+        fg="black",
+        command=nextDecrypion
+    )
+    nextLabel = tk.Label(
+        shiftWindow,
+        text="0 remaining encryptions"
+    )
     runButton.grid(row=0, column=0)
     autoLabel.grid(row=1, column=0)
     autoButton.grid(row=2, column=0)
@@ -175,6 +211,8 @@ def shiftCipherButton():
     shiftAmount.grid(row=1, column=3)
     inputLabel.grid(row=0, column=2)
     shiftLabel.grid(row=1, column=2)
+    nextButton.grid(row=2, column=2)
+    nextLabel.place(x=200, y=160)
 
 ######################################################
 ######################################################
